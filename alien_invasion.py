@@ -23,7 +23,7 @@ def run_game():
     alien = Alien(ai_settings, screen)
     """Run main loop of the game"""
     # Creating alien fleet
-    gf.create_fleet(ai_settings, screen, aliens)
+    gf.create_fleet(ai_settings, screen, ship,  aliens)
     while True:
         """Tracking keyboard and mouse events"""
         gf.check_events(ai_settings, screen, ship, bullets)
