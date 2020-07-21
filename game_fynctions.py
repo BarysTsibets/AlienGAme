@@ -10,11 +10,14 @@ def check_keydown_events(event, ai_settings, screen, ship, bullets):
     elif event.key == pygame.K_LEFT:
         ship.moving_left = True
     elif event.key == pygame.K_SPACE:
-        # Create new bullet and adding it to the Group bullets.
-        if len(bullets) < ai_settings.bullets_allowed:
-            new_bullet = Bullet(ai_settings, screen, ship)
-            bullets.add(new_bullet)
+        fire_bullet(ai_settings, screen, ship, bullets)
 
+
+def fire_bullet(ai_settings, screen, ship, bullets):
+    """Create new bullet if number of the current bullets less than 3"""
+    if len(bullets) < ai_settings.bullets_allowed:
+        new_bullet = Bullet(ai_settings, screen, ship)
+        bullets.add(new_bullet)
 
 def check_keyup_events(event, ship):
     """KeyUP event"""
@@ -46,3 +49,15 @@ def update_screen(ai_settings, screen, ship, bullets):
 
     """Tracking the last drawn screen """
     pygame.display.flip()
+
+
+def update_bullets(bullets):
+    """Update bullet position and Delete bullets outside of the screen."""
+    # Update bullet position
+    bullets.update()
+    # Delete bullets outside of the screen
+    for bullet in bullets.copy():
+        if bullet.rect.bottom <= 0:
+            bullets.remove(bullet)
+
+

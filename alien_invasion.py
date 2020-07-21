@@ -23,12 +23,7 @@ def run_game():
         """Tracking keyboard and mouse events"""
         gf.check_events(ai_settings, screen, ship, bullets)
         ship.update()
-        bullets.update()
-        # Delete bullets outside of the screen.
-        for bullet in bullets.copy():
-            if bullet.rect.bottom <= 0:
-                bullets.remove(bullet)
-
+        gf.update_bullets(bullets)
         gf.update_screen(ai_settings, screen, ship, bullets)
 
 
