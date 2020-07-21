@@ -1,7 +1,7 @@
 import pygame
-import sys
 from settings import Settings
 from ship import Ship
+import game_fynctions as gf
 
 
 def run_game():
@@ -17,17 +17,9 @@ def run_game():
 
     """Run main loop of the game"""
     while True:
-
         """Tracking keyboard and mouse events"""
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                sys.exit()
-        """Drawing BackGround screen color"""
-        screen.fill(ai_settings.bg_color)
-        ship.blitme()
-
-        """Tracking the last drawn screen """
-        pygame.display.flip()
+        gf.check_events()
+        gf.update_screen(ai_settings, screen, ship)
 
 
 run_game()
