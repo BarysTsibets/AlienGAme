@@ -13,7 +13,7 @@ def run_game():
     pygame.display.set_caption("Alien Invasion")
 
     """Creating Ship"""
-    ship = Ship(screen)
+    ship = Ship(ai_settings, screen)
 
     """Run main loop of the game"""
     while True:
