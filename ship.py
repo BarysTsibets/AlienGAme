@@ -17,11 +17,14 @@ class Ship:
 
         """"Ship Move  FLAG"""
         self.moving_right = False
+        self.moving_left = False
 
     def update(self):
         """Updating ship position depending of FLAG status"""
         if self.moving_right:
             self.rect.centerx += 1
+        if self.moving_left:
+            self.rect.centerx -= 1
 
 
 
