@@ -12,7 +12,7 @@ class Ship:
         self.screen_rect = screen.get_rect()
 
         """New ship will be centered in the  bottom of the screen """
-        self.rect.centerex = self.screen_rect.centerex
+        self.rect.centerx = self.screen_rect.centerx
         self.rect.bottom = self.screen_rect.bottom
 
 
