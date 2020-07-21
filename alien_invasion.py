@@ -1,13 +1,16 @@
 import pygame
 import sys
+from settings import Settings
 
 
 def run_game():
-    """Create screen object"""
+    """Initialising pygame, settings and  screen object"""
     pygame.init()
-    screen = pygame.display.set_mode((1000, 600))
+    ai_settings = Settings()
+
+    screen = pygame.display.set_mode((ai_settings.screen_width,
+                                      ai_settings.screen_height))
     pygame.display.set_caption("Alien Invasion")
-    bg_color = (230, 230, 230)
 
     """Run main loop of the game"""
     while True:
@@ -17,10 +20,12 @@ def run_game():
             if event.type == pygame.QUIT:
                 sys.exit()
         """Drawing BackGround screen color"""
-        screen.fill(bg_color)
+        screen.fill(ai_settings.bg_color)
 
         """Tracking the last drawn screen """
         pygame.display.flip()
+
+
 run_game()
 
 
