@@ -15,8 +15,10 @@ class Ship:
         self.rect.centerex = self.screen_rect.centerex
         self.rect.bottom = self.screen_rect.bottom
 
+
     def blitme(self):
         """Drawing ship in the current position"""
         self.screen.blit(self.image, self.rect)
+
 
 
