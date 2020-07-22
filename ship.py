@@ -35,5 +35,8 @@ class Ship:
         """Drawing ship in the current position"""
         self.screen.blit(self.image, self.rect)
 
+    def center_ship(self):
+        """Create ship in the center of the screen"""
+        self.center = self.screen_rect.centerx
 
 
