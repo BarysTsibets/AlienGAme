@@ -95,15 +95,34 @@ def create_alien(ai_settings, screen, aliens, alien_number,row_number):
     alien.rect.y = alien.rect.height + 2 * alien.rect.height * row_number
     aliens.add(alien)
 
+
 def get_number_rows(ai_settings, ship_height, alien_height):
     """Calculate numbers of rows on the screen"""
     available_space_y = (ai_settings.screen_height - (3 * alien_height) - ship_height)
     number_rows = int(available_space_y / (2 * alien_height))
     return number_rows
 
-def update_aliens(aliens):
-    """Update position of all aliens in the fleet"""
+
+def update_aliens(ai_settings, aliens):
+    """Check if aliens stay near edge of the screen and
+         Update position of all aliens in the fleet"""
+    check_fleet_edges(ai_settings, aliens)
     aliens.update()
+
+
+def check_fleet_edges(ai_settings,aliens):
+    """Check if alien stay on the edges of screen"""
+    for alien in aliens.sprites():
+        if alien.check_edges():
+            change_fleet_direction(ai_settings, aliens)
+            break
+
+
+def change_fleet_direction(ai_settings, aliens):
+    """Move all fleet down and change direction"""
+    for alien in aliens.sprites():
+        alien.rect.y += ai_settings.fleet_drop_speed
+    ai_settings.fleet_direction *= -1
 
 
 
