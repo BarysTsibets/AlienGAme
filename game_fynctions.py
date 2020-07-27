@@ -31,18 +31,27 @@ def check_keyup_events(event, ship):
         ship.moving_left = False
 
 
-def check_events(ai_settings, screen, ship, bullets):
+def check_events(ai_settings, screen, stats, play_button, ship, bullets):
     """Handles a key press and a mouse event"""
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
         elif event.type == pygame.KEYDOWN:
-            check_keydown_events(event,ai_settings, screen, ship, bullets)
+            check_keydown_events(event, ai_settings, screen, ship, bullets)
         elif event.type == pygame.KEYUP:
             check_keyup_events(event, ship)
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+            check_play_button(stats, play_button, mouse_x, mouse_y)
 
 
-def update_screen(ai_settings, screen, ship, aliens,  bullets):
+def check_play_button(stats, play_button, mouse_x, mouse_y):
+    """Start new game when you click Play button"""
+    if play_button.rect.collidepoint(mouse_x, mouse_y):
+        stats.game_active = True
+
+
+def update_screen(ai_settings, screen, stats,  ship, aliens,  bullets, play_button):
     """Drawing BackGround screen color"""
     """Drawing every time during  each loop"""
     screen.fill(ai_settings.bg_color)
@@ -51,7 +60,9 @@ def update_screen(ai_settings, screen, ship, aliens,  bullets):
         bullet.draw_bullet()
     ship.blitme()
     aliens.draw(screen)
-
+    # Play button show only if game inactive
+    if not stats.game_active:
+        play_button.draw_button()
     """Tracking the last drawn screen """
     pygame.display.flip()
 
@@ -122,6 +133,9 @@ def update_aliens(ai_settings, stats, screen, ship, aliens, bullets):
     # Check 'Ship - Alien' collisions
     if pygame.sprite.spritecollideany(ship, aliens):
         ship_hit(ai_settings, stats, screen, ship, aliens, bullets)
+    # check aliens if they hit bottom of the screen
+    check_aliens_bottom(ai_settings, stats, screen, ship, aliens, bullets)
+
 
 
 
@@ -141,19 +155,31 @@ def change_fleet_direction(ai_settings, aliens):
 
 
 def ship_hit(ai_settings, stats, screen , ship, aliens, bullets):
-    """Рandles collision Ship with Alien"""
-    # Make less ship_left
-    stats.ships_left -= 1
+    """Handles collision Ship with Alien"""
+    if stats.ships_left > 0:
+        # Make less ship_left
+        stats.ships_left -= 1
+        # Refresh lists of aliens and bullets
+        aliens.empty()
+        bullets.empty()
+        # Creating new fleet and main Ship in the center of the screen
+        create_fleet(ai_settings, screen, ship, aliens)
+        ship.center_ship()
+        # Pause
+        sleep(0.5)
+    else:
+        stats.game_active = False
 
-    # Refresh lists of aliens and bullets
-    aliens.empty()
-    bullets.empty()
 
-    # Creating new fleet and main Ship in the center of the screen
-    create_fleet(ai_settings, screen, ship, aliens)
-    ship.center_ship()
 
-    # Pause
-    sleep(0.5)
+def check_aliens_bottom(ai_settings, stats, screen, ship, aliens, bullets):
+    """Check if aliens hit the bottom"""
+    screen_rect = screen.get_rect()
+    for alien in aliens.sprites():
+        if alien.rect.bottom >= screen_rect.bottom:
+            # will happen the same if Alien hit Ship
+            ship_hit(ai_settings, stats, screen, ship, aliens, bullets)
+            break
+
 
 
